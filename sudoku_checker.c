@@ -20,7 +20,7 @@ bool Check3X3Grid(int sudoku[][MAX_SIZE], int row, int column)
 
    for(i = row; i < row + 3; i++) {
       for(j = column; j < column + 3; j++) {
-         if(seen[sudoku[i][j]]) {
+         if(sudoku[i][j] != 0 && seen[sudoku[i][j]]) {
             return false;
          }
          seen[sudoku[i][j]] = 1;
