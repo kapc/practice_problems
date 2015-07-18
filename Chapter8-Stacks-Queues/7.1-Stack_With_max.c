@@ -36,11 +36,10 @@ InitStack(Stack *st)
 bool
 PushStack(Stack *st, int elem)
 {
-    if (st->top == MAX) {
-        printf("Stack overflow.");
+
+    if (IsStackFull(st)) {
         return false;
     }
-
     st->arr[++st->top] = elem;
     return true;
 }
@@ -57,11 +56,9 @@ PushStack(Stack *st, int elem)
 int
 PopStack(Stack *st)
 {
-    if (st->top < 0) {
-        printf("Stack underflow.");
+    if (IsStackEmptry(st)) {
         return INT_MAX;
     }
-
     return st->arr[st->top--];
 }
 
@@ -79,6 +76,82 @@ IsStackEmpty(Stack *st)
 {
     return st->top < 0;
 }
+
+/*
+ * ----------------------------------------------------------------
+ *  IsStackFull --
+ *      Check if the stack is full.
+ *  Results:
+ *      True if yes, false otherwise.
+ * ----------------------------------------------------------------
+ */
+bool
+IsStackFull(Stack *st)
+{
+    return st->top >= MAX;
+}
+
+/*
+ * ----------------------------------------------------------------
+ *  ReadTop --
+ *      Read top element.
+ * ----------------------------------------------------------------
+ */
+int
+ReadTop(Stach *st) {
+    if (!IsStackEmpty(st)) {
+        return st->arr[top];
+    }
+    return INT_MAX;
+}
+
+/*
+ * ----------------------------------------------------------------
+ *  PushMaxStack --
+ *      Push an element in the max stack.
+ * ----------------------------------------------------------------
+ */
+bool
+PushMaxStack(Stack *st, int data) 
+{
+    
+    if (IsStackFull(st)) {
+        return false;
+    }
+
+    if (IsStackEmpty(&maxStack)) {
+        bool result = PushStack(&maxStack, data);
+    } else {
+        if (data >= ReadTop(&maxStack)) {
+            bool result = PushStack(&maxStack, data);
+        }
+    }
+    return PushStack(st, data);
+}
+
+/*
+ * -----------------------------------------------------------------
+ *  PopMaxStack --
+ *      Pop an element in the max stack.
+ *
+ *  Results:
+ *      Success then return the element, INT_MAX otherwise.
+ * -----------------------------------------------------------------
+ */
+int
+PopMaxStack(Stack *st)
+{
+    if (IsStackEmpty(st)) {
+        return INT_MAX;
+    }
+
+    if (st->top == maxStack.top) {
+        int res = PopStack(maxStack);
+    }
+
+    return PopStack(st);
+}
+ 
 
 /*
  * -----------------------------------------------------------------
