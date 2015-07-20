@@ -11,6 +11,10 @@ typedef struct Stack {
 
 static Stack stack;
 static Stack maxStack;
+
+bool IsStackFull(Stack *);
+bool IsStackEmpty(Stack *);
+
 /*
  * ---------------------------------------------------------------
  *  InitStack --
@@ -56,7 +60,7 @@ PushStack(Stack *st, int elem)
 int
 PopStack(Stack *st)
 {
-    if (IsStackEmptry(st)) {
+    if (IsStackEmpty(st)) {
         return INT_MAX;
     }
     return st->arr[st->top--];
@@ -98,9 +102,9 @@ IsStackFull(Stack *st)
  * ----------------------------------------------------------------
  */
 int
-ReadTop(Stach *st) {
+ReadTop(Stack *st) {
     if (!IsStackEmpty(st)) {
-        return st->arr[top];
+        return st->arr[st->top];
     }
     return INT_MAX;
 }
@@ -146,7 +150,7 @@ PopMaxStack(Stack *st)
     }
 
     if (st->top == maxStack.top) {
-        int res = PopStack(maxStack);
+        int res = PopStack(&maxStack);
     }
 
     return PopStack(st);
@@ -171,6 +175,25 @@ ReturnTop(Stack *st)
     return INT_MAX;
 }
 
+/*
+ * ------------------------------------------------------------------
+ *  ReturnCurrentMax --
+ *      Return the curren max in the stack.
+ *
+ *  Results:
+ *      int
+ * ------------------------------------------------------------------
+ */
+int
+ReturnCurrentMax(void)
+{
+    if (IsStackEmpty(&maxStack)) {
+        printf("Stack underflow.");
+        return INT_MAX;
+    }
+    return maxStack.arr[maxStack.top];
+}
+
 int main(void) {
     bool result;
     int elem;
@@ -178,13 +201,22 @@ int main(void) {
     InitStack(&stack);
     InitStack(&maxStack);
 
-    result = PushStack(&stack, 33);
-    result = PushStack(&stack, 44);
-    result = PushStack(&stack, 55);
+    result = PushMaxStack(&stack, 33);
+    printf("Current max = %d\n", ReturnCurrentMax());
+    result = PushMaxStack(&stack, 44);
+    printf("Current max = %d\n", ReturnCurrentMax());
+    result = PushMaxStack(&stack, 55);
+    printf("Current max = %d\n", ReturnCurrentMax());
+    result = PushMaxStack(&stack, 13);
+    printf("Current max = %d\n", ReturnCurrentMax());
+    result = PushMaxStack(&stack, 100);
+    printf("Current max = %d\n", ReturnCurrentMax());
 
-    while((elem = PopStack(&stack)) != INT_MAX) {
+    while((elem = PopMaxStack(&stack)) != INT_MAX) {
         printf("%d\n", elem);
+        printf("Current max = %d\n", ReturnCurrentMax());
     }
+
 
 }
 
