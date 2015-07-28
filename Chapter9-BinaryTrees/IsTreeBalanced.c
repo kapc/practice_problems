@@ -1,15 +1,30 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "BinaryTree.h"
 
+void UnbalancedTreeTest(void);
 
 static int inline
 max(int a, int b)
 {
     return (a < b) ? b : a;
 }
+
+
+/*
+ * -----------------------------------------------------
+ *  GetHeightBetter --
+ *      In this height function you traverse tree in post
+ *      order and at each level verify the hieght at the
+ *      same time. So you will not need to traverse tree
+ *      twice to make a decision about if it is balanced
+ *      or not.
+ * -----------------------------------------------------
+ */
+
 /*
  * -----------------------------------------------------
  *  Height -- 
@@ -38,17 +53,15 @@ Height(Node *root)
 bool
 IsTreeBalanced(Node *root)
 {
-    int leftHeight = 0, rightHeight = 0;
     if (root == NULL) {
         return true;
     }
 
-    leftHeight = Height(root->left);
-    rightHeight = Height(root->right);
-    
-    return ((leftHeight - rightHeight) < 2);
-
+    return IsTreeBalanced(root->left) &&
+           IsTreeBalanced(root->right) &&
+            abs(Height(root->left) - Height(root->right)) < 2;
 }
+
 
 int main(void) {
     Node *root = NULL;
@@ -59,8 +72,23 @@ int main(void) {
 
     PrintTree(root);
     printf("Height of the tree is %d\n", Height(root));
-
     printf("Is the tree balanced? %s\n", IsTreeBalanced(root) ? "true" : "false");
 
+    UnbalancedTreeTest();
+}
+
+/* Tests */
+
+void
+UnbalancedTreeTest(void)
+{
+    Node *root = NULL;
+    root = InsertNode(root, 10);
+    root = InsertNode(root, 30);
+    root = InsertNode(root, 5);
+    root = InsertNode(root, 25);
+    root = InsertNode(root, 1);
+
+    printf("Is this tree balanced? %s\n", IsTreeBalanced(root) ? "true" : "false");
 }
 
