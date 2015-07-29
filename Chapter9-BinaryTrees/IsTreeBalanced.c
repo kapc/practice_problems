@@ -24,7 +24,30 @@ max(int a, int b)
  *      or not.
  * -----------------------------------------------------
  */
+int
+GetHeightBetter(Node *root)
+{
+    if (root == NULL) {
+        return -1;
+    }
 
+    leftHeight = GetHeightBetter(root->left);
+    if (leftHeight == -2) {
+        return -2;
+    }
+
+    rightHeight = GetHeightBetter(root->right);
+    if (rightHeight == -2) {
+        return -2;
+    }
+
+    /* Check and stop the recursion. */
+    if (abs(leftHeight - rightHeight) > 1) {
+        return -2;
+    }
+
+    return max(leftHeight, rightHeight) + 1;
+}
 /*
  * -----------------------------------------------------
  *  Height -- 
