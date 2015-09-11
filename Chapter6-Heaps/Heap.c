@@ -88,12 +88,44 @@ Heap_Delete(Heap_t *newHeap)
         return NULL;
     }
 
-    data = newHeap->data[size - 1];
+    data = newHeap->data[0];
+    newHeap->data[0] = newHeap->data[size - 1];
     newHeap->size--;
-    Heap_Heapify(newHeap);
+    Heap_Heapify(0);
     return data;
 }
 
+/*
+ * -------------------------------------------------------------
+ *  Heapify --
+ *      Make sure the current heap follows the heap property.
+ * -------------------------------------------------------------
+ */
+void
+Heapify(Heap_t *newHeap, int curPos)
+{
+    NP_CHECK(newHeap);
+    // If no children return.
+    // Check which one is bigger
+    // Swap.
+    int leftChild = LEFT(curPos), rightChild = RIGHT(curPos);
+    int largestChild = -1;
 
+    if (leftChild < newHeap->size && 
+        newHeap->cmp(newHeap[leftChild], newHeap[curPos]) > 0) {
+        largestChild = leftChild;
+    }
+    if (rightChild < newHeap->size && 
+        newHeap->cmp(newHeap[rightChild], newHeap[curPos]) > 0) {
+        largestChild = rightChild;
+    }
+    
+    if (largestChild != -1) {
+        void *tmp = newHeap[curPos];
+        newHeap[curPos] = newHeap[largestChild];
+        newHeap[largetChild] = tmp;
+        Heapify(newHeap, largestChild);
+    }
+}
 
 
