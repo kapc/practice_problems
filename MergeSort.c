@@ -1,98 +1,53 @@
-// -----------------------------------------------------------
-// -----------------------------------------------------------
-//
-//
-
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-// Forward declarations.
-void Merge(int *arr, int start, int mid, int end);
-void MergeSort(int *arr, int len);
-void MergeSortHelper(int *arr, int start, int end);
+#define MAX 10
 
-/*
- * --------------------------------------------------------
- *  MergeSort --
- *      Sort an array using merge.
- * --------------------------------------------------------
- */
-void
-MergeSort(int *arr, int len)
+void Merge(int *a, int start, int end, int start1, int end1)
 {
-    MergeSortHelper(arr, 0, len - 1);
+	int tmp[MAX], idx = 0;
+	int i = start, j = end, k = start1, l = end1;
+	printf("Merging %d %d %d %d\n", start, end, start1, end1);
+	while(i <= j && k <= l) {
+		if (a[i] < a[k]) {
+			tmp[idx++] = a[i++];
+		} else {
+			tmp[idx++] = a[k++];
+		}
+	}
+
+	while(i <= j) {
+		tmp[idx++] = a[i++];
+	}
+
+	while(k <= l) {
+		tmp[idx++] = a[k++];
+	}
+
+	for (i = 0, j = start; i < idx; i++, j++) {
+		a[j] = tmp[i];
+	}
 }
 
-/*
- * --------------------------------------------------------
- *  MergeSortHelper --
- *      Merge sort helper routine.
- * --------------------------------------------------------
- */
-void
-MergeSortHelper(int *arr, int start, int end)
+void MergeSort(int *a, int start, int end)
 {
-    int mid; 
+	int mid;
 
-    /* Make sure to return at single element array. */
-    if (start >= end) {
-        return;
-    }
+	if (start >= end) {
+		return;
+	}
 
-    /* Be careful for int overflow. */
-    mid = start + (end - start) / 2;
-    MergeSortHelper(arr, start, mid);
-    MergeSortHelper(arr, mid + 1, end);
-    Merge(arr, start, mid, end);
+	mid = (start + end) / 2;
+	MergeSort(a, start, mid);
+	MergeSort(a, mid + 1, end);
+	Merge(a, start, mid, mid + 1, end);
 }
 
-/*
- * --------------------------------------------------------
- * Merge --
- *
- *  This routine basically merges two given list in sorted 
- *  order.
- * -------------------------------------------------------
- */
-void Merge(int *arr, int start, int mid, int end)
+int main(void) 
 {
-    int len = end - start + 1;
-    int i = start, j = mid, k = mid + 1, l = end;
-    int index = 0;
-    int tmp[len];
+	int a[MAX] = {1, 34, 3, 56, 99, 78, 43, 66, 22, 88};
+	MergeSort(a, 0, 9);
 
-    memset(tmp, 0, len);
-
-    while(i <= j && k <= l) {
-        if(arr[i] < arr[k]) {
-            tmp[index++] = arr[i++];
-        } else {
-            tmp[index++] = arr[k++];
-        }
-    }
-
-    while(k <= l) {
-        tmp[index++] = arr[k++];
-    }
-
-    while(i <= j) {
-        tmp[index++] = arr[i++];
-    }
-
-    for(i = start, index = 0; i <= end; i++) {
-        arr[i] = tmp[index++];
-    }
-}
-
-int 
-main(void)
-{
-    int arr[10] = {1, 45, 23, 4, 5, 224, 5, 21, 66, 1};
-    int i = 0;
-    MergeSort(arr, 10);
-
-    for(i = 0; i < 10; i++) {
-        printf("%d ", arr[i]);
-    }
+	for (int i = 0; i < MAX; i++) {
+		printf("%d ", a[i]);
+	}
 }
